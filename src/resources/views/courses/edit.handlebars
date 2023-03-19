@@ -1,0 +1,21 @@
+<div class="mt-4">
+    <h3>Update khoa hoc</h3>
+    <div class="m-4">
+        <form method="POST" action="/courses/{{course._id}}?_method=PUT">
+            <div class="form-group ">
+                <label for="name">name</label>
+                <input type="type" class="form-control" value={{course.name}} id="name" name="name">
+            </div>
+            <div class="form-group ">
+                <label for="description">Description</label>
+                <input type="type" class="form-control" value={{course.description}} id="description" name="description">
+            </div>
+            <div class="form-group ">
+                <label for="video">video</label>
+                <input type="type" class="form-control" value={{course.video}} id="video" name="video" >
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>

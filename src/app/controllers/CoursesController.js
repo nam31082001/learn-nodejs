@@ -42,15 +42,30 @@ class coursesController {
         .then(()=>res.redirect('back'))
         .catch(next)
     }
+
+
     restore(rep, res, next){
         Course.restore({_id:rep.params.id})
         .then(()=>res.redirect('back'))
         .catch(next)
     }
+
+    
     forceDelete(rep, res, next){
         Course.deleteOne({_id:rep.params.id})
         .then(()=>res.redirect('back'))
         .catch(next)
+    }
+    handFormActions(rep, res, next){
+      switch (rep.body.action) {
+        case 'delete':
+            Course.delete({_id:{$in:rep.body.courseIds}})
+            .then(()=>res.redirect('back'))
+            .catch(next)
+            break;
+        default:
+            res.json({message:'sai'})
+      }
     }
 
 

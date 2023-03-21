@@ -19,7 +19,7 @@ class coursesController {
         const course = new Course(fromData)
         course.save()
             .then(() => res.redirect('/'))
-            .catch(error => {  })
+            .catch(next)
     }
     edit(rep, res, next) {
         Course.findById(rep.params.id)

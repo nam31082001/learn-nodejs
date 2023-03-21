@@ -32,7 +32,7 @@
 
                     </th>
                     <th scope="col">thoi gian tao
-                        {{{sortable 'createdAt' _sort}}}
+                        {{!-- {{{sortable 'createdAt' _sort}}} --}}
 
 
                     </th>
@@ -47,7 +47,7 @@
                         <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}">
 
                     </td>
-                    <td scope="row"> {{sum @index 1}}</td>
+                    <td scope="row"> {{this._id}}</td>
                     <td>{{this.name}}</td>
                     <td>yeu</td>
                     <td>{{this.createdAt}}</td>

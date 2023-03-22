@@ -1,43 +1,65 @@
-<div class="mt-4">
-    <div style="display:flex">
-        <h3 class="ml-3">Khoa hoc cua toi</h3>
-        <a href="/me/stored/courses">Quay lại</a>
+<form class="mt-4" name="container-form" method="POST" action="/courses/handle-form-trash">
+
+    <div class="mt-4">
+        <div style="display:flex">
+            <h3 class="ml-3">Khoa hoc cua toi</h3>
+            <a href="/me/stored/courses">Quay lại</a>
+        </div>
+        <div class=" w-50 form-check d-flex align-items-center justify-content-around">
+            <span>
+                <input class="form-check-input" type="checkbox" value="" id="check-all-trash">
+                <label class="form-check-label" for="defaultCheck1">
+                    Chọn tất cả
+                </label>
+            </span>
+            <select class="form-control form-control-sm w-50" name="action" required>
+                <option value="">--Hành Động--</option>
+                <option value="khoi_phuc">Khoi phuc</option>
+                <option value="delete">Xóa</option>
+            </select>
+            <button type="submit" class="btn btn-primary  btn-check-all-trash" disabled="disabled">Thực hiện</button>
+        </div>
+        <div class="d-flex justify-content-center">
+
+            <table class="table w-75 ">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">#</th>
+                        <th scope="col">Ten khoa hoc </th>
+                        <th scope="col">trinh do</th>
+                        <th scope="col">thoi gian tao</th>
+                        <th scope="col">Them</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each courses}}
+                    <tr>
+                        <td><input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}">
+                        </td>
+                        <th scope="row"> {{sum @index 1}}</th>
+                        <td>{{this.name}}</td>
+                        <td>yeu</td>
+                        <td>{{this.createdAt}}</td>
+                        <td>
+                            <a href="" class="btn btn-outline-primary btn_restore" data-id="{{this._id}}">Khôi phục</a>
+                            <a href="" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal"
+                                data-id="{{this._id}}">Delete</a>
+                        </td>
+                    </tr>
+                    {{else}}
+                    <td colspan="5">
+                        <a href="/courses/create"> <button type="button" class="btn btn-primary">Đăng khóa học</button>
+                        </a>
+                    </td>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+
     </div>
-
-    <table class="table w-100">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Ten khoa hoc </th>
-                <th scope="col">trinh do</th>
-                <th scope="col">thoi gian tao</th>
-                <th scope="col">Them</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each courses}}
-            <tr>
-                <th scope="row"> {{sum @index 1}}</th>
-                <td>{{this.name}}</td>
-                <td>yeu</td>
-                <td>{{this.createdAt}}</td>
-                <td>
-                    <a href="" class="btn btn-outline-primary btn_restore" data-id="{{this._id}}">Khôi phục</a>
-                    <a href="" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal"
-                        data-id="{{this._id}}">Delete</a>
-                </td>
-            </tr>
-            {{else}}
-            <td colspan="5">
-                <a href="/courses/create">
-                    <button type="button" class="btn btn-primary">Đăng khóa học</button>
-                </a>
-            </td>
-
-            {{/each}}
-        </tbody>
-    </table>
-</div>
+</form>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -71,11 +93,16 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        
         var coursesId
         var btnDeleteCourse = document.getElementById('btn_delete_course')
         var deleteForm = document.getElementById('delete-course-form')
         var restoreForm = document.getElementById('restore-course-form')
         var restoreBtn = $('.btn_restore')
+         var courseItemCheckbox = $('input[name="courseIds[]"]')
+        var checkboxAll = $('#check-all-trash')
+        var checkAllSubmitBtn = $('.btn-check-all-trash')
+
 
 
         $('#exampleModal').on('show.bs.modal', function (event) {
@@ -94,6 +121,21 @@
             restoreForm.submit()
         })
 
+        checkboxAll.change(function () {
+            var isCheckedAll = $(this).prop('checked')
+            courseItemCheckbox.prop('checked', isCheckedAll)
+            renderCheckAllSubmitBtn()
+        })
+
+        courseItemCheckbox.change(function () {
+            var is = courseItemCheckbox.length === $('input[name="courseIds[]"]:checked').length
+            checkboxAll.prop('checked', is)
+            renderCheckAllSubmitBtn()
+        })
+        function renderCheckAllSubmitBtn() {
+            var checkCount = $('input[name="courseIds[]"]:checked').length
+            checkCount ? checkAllSubmitBtn.attr('disabled', false) : checkAllSubmitBtn.attr('disabled', true)
+        }
     })
 
 </script>

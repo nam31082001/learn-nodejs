@@ -30,42 +30,58 @@ class coursesController {
 
     }
     // [update]
-    update(rep, res, next){
-        Course.updateOne({_id:rep.params.id},rep.body)
-        .then(()=>res.redirect('/me/stored/courses'))
-        .catch(next)
+    update(rep, res, next) {
+        Course.updateOne({ _id: rep.params.id }, rep.body)
+            .then(() => res.redirect('/me/stored/courses'))
+            .catch(next)
     }
 
     // [delete]
-    delete(rep, res, next){
-        Course.delete({_id:rep.params.id})
-        .then(()=>res.redirect('back'))
-        .catch(next)
-    }
-
-
-    restore(rep, res, next){
-        Course.restore({_id:rep.params.id})
-        .then(()=>res.redirect('back'))
-        .catch(next)
-    }
-
-    
-    forceDelete(rep, res, next){
-        Course.deleteOne({_id:rep.params.id})
-        .then(()=>res.redirect('back'))
-        .catch(next)
-    }
-    handFormActions(rep, res, next){
-      switch (rep.body.action) {
-        case 'delete':
-            Course.delete({_id:{$in:rep.body.courseIds}})
-            .then(()=>res.redirect('back'))
+    delete(rep, res, next) {
+        Course.delete({ _id: rep.params.id })
+            .then(() => res.redirect('back'))
             .catch(next)
-            break;
-        default:
-            res.json({message:'sai'})
-      }
+    }
+
+
+    restore(rep, res, next) {
+        Course.restore({ _id: rep.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next)
+    }
+
+
+    forceDelete(rep, res, next) {
+        Course.deleteOne({ _id: rep.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next)
+    }
+    handFormActions(rep, res, next) {
+        switch (rep.body.action) {
+            case 'delete':
+                Course.delete({ _id: { $in: rep.body.courseIds } })
+                    .then(() => res.redirect('back'))
+                    .catch(next)
+                break;
+            default:
+                res.json({ message: 'sai' })
+        }
+    }
+    handFormTrash(rep, res, next) {
+        switch (rep.body.action) {
+            case 'khoi_phuc':
+                Course.restore({ _id: { $in: rep.body.courseIds } })
+                    .then(() => res.redirect('back'))
+                    .catch(next)
+                break;
+            case 'delete':
+                Course.deleteOne({ _id: { $in: rep.body.courseIds } })
+                    .then(() => res.redirect('back'))
+                    .catch(next)
+                break;
+            default:
+                res.json({ message: 'sai' })
+        }
     }
 
 

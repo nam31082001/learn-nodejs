@@ -5,7 +5,7 @@ const coursesController = require('../app/controllers/CoursesController');
 router.get('/create', coursesController.create);
 router.post('/store', coursesController.store);
 router.post('/handle-form-actions', coursesController.handFormActions);
-
+router.post('/handle-form-trash', coursesController.handFormTrash);
 router.get('/:id/edit', coursesController.edit);
 router.put('/:id', coursesController.update);
 // restore
